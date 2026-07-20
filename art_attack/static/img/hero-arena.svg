@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#22232a"/><stop offset="1" stop-color="#111116"/></linearGradient>
+    <linearGradient id="warm" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f15b47"/><stop offset="1" stop-color="#f5aa3c"/></linearGradient>
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M60 0H0v60" fill="none" stroke="#fff" stroke-opacity=".05"/></pattern>
+  </defs>
+  <rect width="900" height="900" fill="url(#bg)"/><rect width="900" height="900" fill="url(#grid)"/>
+  <circle cx="610" cy="390" r="260" fill="#59d4c5" opacity=".08"/><circle cx="650" cy="410" r="195" fill="none" stroke="#59d4c5" stroke-width="6" stroke-dasharray="22 14"/>
+  <path d="M166 678c130-120 260-72 344-176 76-94 160-170 330-114v420H166Z" fill="#0c0d10"/>
+  <path d="M342 707c35-176 91-313 166-413 19-25 46-46 70-35 29 13 25 53 15 82-43 130-70 256-70 366Z" fill="url(#warm)"/>
+  <path d="M370 713c23-159 70-279 136-367" fill="none" stroke="#fff8ed" stroke-width="12" stroke-linecap="round" opacity=".75"/>
+  <path d="M526 282c-12-39 21-97 64-121 44-25 96-19 118 12-40 2-75 23-89 61 42-9 82 4 102 33-53-5-96 13-123 52-22 32-60 19-72-37Z" fill="#fff8ed"/>
+  <path d="M590 180c39 27 59 63 60 107" fill="none" stroke="#f15b47" stroke-width="8"/>
+  <g transform="translate(610 540) rotate(-11)"><rect x="-85" y="-62" width="170" height="124" rx="12" fill="#fff8ed"/><path d="m-61 31 35-42 24 22 30-47 34 67Z" fill="#74aef8"/><circle cx="44" cy="-28" r="14" fill="#f5aa3c"/></g>
+  <g fill="none" stroke="#f15b47" stroke-width="8" stroke-linecap="round"><path d="m735 114 18-42m18 65 39-25m-17 69 47 3"/></g>
+  <text x="535" y="768" fill="#fff8ed" font-family="sans-serif" font-size="30" font-weight="700" transform="rotate(-7 535 768)">CREATE · CHALLENGE</text>
+</svg>

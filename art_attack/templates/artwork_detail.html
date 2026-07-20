@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ artwork.title }} — Art Attack{% endblock %}
+{% block content %}
+<div class="detail-grid">
+  <div class="detail-image"><img src="{{ url_for('static', filename='uploads/' ~ artwork.image_path) }}" alt="{{ artwork.title }}"></div>
+  <aside class="detail-info panel">
+    <span class="eyebrow">{{ artwork.category }} · {{ artwork.owner.team }}</span>
+    <h1 class="display">{{ artwork.title }}</h1>
+    <p class="muted">by <a style="color:var(--paper)" href="{{ url_for('profile', user_id=artwork.owner.id) }}">{{ artwork.owner.username }}</a> · {{ artwork.created_at|datetime }}</p>
+    <p class="detail-description">{{ artwork.description or 'The artist has left this work open to interpretation.' }}</p>
+    <div class="tags">{% if artwork.medium %}<span class="tag">{{ artwork.medium }}</span>{% endif %}{% for tag in artwork.tag_list %}<span class="tag">#{{ tag }}</span>{% endfor %}</div>
+    <hr class="divider">
+    {% if artwork.for_sale %}<div><span class="muted mini">COLLECT THIS PIECE</span><div class="display" style="font-size:2rem;margin-top:4px;color:var(--amber)">{% if artwork.is_sold %}Sold{% else %}{{ artwork.price|money }}{% endif %}</div></div>{% endif %}
+    <div class="action-row">
+        {% if current_user.is_authenticated %}
+        <form method="post" action="{{ url_for('toggle_like', painting_id=artwork.id) }}"><button class="btn like-button {% if liked %}active{% endif %}" type="submit">♥ {{ artwork.like_count }} {% if liked %}Liked{% else %}Like{% endif %}</button></form>
+        {% if artwork.for_sale and not artwork.is_sold and current_user.id != artwork.owner_id %}<form method="post" action="{{ url_for('add_to_cart', painting_id=artwork.id) }}"><button class="btn btn-primary" type="submit">Add to cart</button></form>{% endif %}
+        {% if current_user.id != artwork.owner_id and artwork.owner.characters %}<a class="btn" href="{{ url_for('characters', owner=artwork.owner.id) }}">⚔ Attack artist</a>{% endif %}
+        {% if current_user.id != artwork.owner_id %}<button class="btn btn-danger" type="button" data-modal-open="#report-modal">Report</button>{% endif %}
+      {% else %}<a class="btn btn-primary" href="{{ url_for('login', next=request.path) }}">Sign in to like or buy</a>{% endif %}
+    </div>
+    {% if artwork.status != 'approved' %}<p><span class="status {{ artwork.status }}">{{ artwork.status }}</span> {% if artwork.rejection_reason %}<span class="muted mini">{{ artwork.rejection_reason }}</span>{% endif %}</p>{% endif %}
+  </aside>
+</div>
+{% if current_user.is_authenticated and current_user.id != artwork.owner_id %}
+<div class="modal" id="report-modal"><div class="modal-card"><div class="modal-head"><h2 class="display">Report artwork</h2><button class="icon-btn" type="button" data-modal-close>✕</button></div><form method="post" action="{{ url_for('report_artwork', painting_id=artwork.id) }}"><div class="field"><label>Reason</label><select name="reason" required><option value="">Choose a reason</option>{% for reason in report_reasons %}<option>{{ reason }}</option>{% endfor %}</select></div><div class="field" style="margin-top:12px"><label>Details (optional)</label><textarea name="description" placeholder="Help the moderation team understand the issue."></textarea></div><button class="btn btn-danger btn-block" type="submit" style="margin-top:14px">Submit report</button></form></div></div>
+{% endif %}
+{% endblock %}
