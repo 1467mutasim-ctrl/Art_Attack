@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Sign in — Art Attack{% endblock %}
+{% block content %}
+<section class="auth-layout">
+  <div class="auth-art"><div class="auth-quote"><span class="eyebrow">Return to the arena</span><h2 class="display">Your next favorite piece is one sign-in away.</h2></div></div>
+  <div class="auth-panel">
+    <span class="eyebrow">Welcome back</span><h1 class="display">Sign in</h1><p class="muted">Use your username or email to continue.</p>
+    <form method="post">
+      <div class="field"><label>Username or email</label><input name="identity" autocomplete="username" required autofocus></div>
+      <div class="field"><label>Password</label><input name="password" type="password" autocomplete="current-password" required></div>
+      <label class="checkbox"><input type="checkbox" name="remember" value="1"> Keep me signed in</label>
+      <button class="btn btn-primary btn-block" type="submit">Enter Art Attack</button>
+    </form>
+    <p class="muted mini">New here? <a style="color:var(--teal)" href="{{ url_for('register') }}">Create your account</a></p>
+  </div>
+</section>
+{% endblock %}
+

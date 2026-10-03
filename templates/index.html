@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Art Attack — Create. Challenge. Collect.{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">The creative rivalry starts here</span>
+    <h1 class="display">Make art.<br><em>Start something.</em></h1>
+    <p>Publish your work, build original characters, challenge artists across rival teams, and collect pieces you love. Friendly fire triggers a warning—great art still deserves a little chaos.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{{ url_for('browse') }}">Explore the gallery →</a>
+      {% if current_user.is_authenticated %}<a class="btn" href="{{ url_for('create_character') }}">Create a character</a>{% else %}<a class="btn" href="{{ url_for('register') }}">Choose your team</a>{% endif %}
+    </div>
+  </div>
+  <div class="hero-art"><div class="live-chip"><strong>{{ stats.attacks }} attacks landed</strong><span>The arena is open</span></div></div>
+</section>
+
+<section class="score-strip" aria-label="Team scoreboard">
+  <div class="score-team"><span class="eyebrow">Team Eldians</span><br><strong class="display">{{ team_scores.get('Eldians', 0) }} pts</strong></div>
+  <div class="versus">CREATIVE RIVALS</div>
+  <div class="score-team"><span class="eyebrow" style="color:var(--coral-2)">Team Marleyans</span><br><strong class="display">{{ team_scores.get('Marleyans', 0) }} pts</strong></div>
+</section>
+
+<div class="section-title"><div><span class="eyebrow">Fresh from the community</span><h2 class="display">New work worth knowing</h2></div><a class="btn btn-small" href="{{ url_for('browse') }}">See all artwork</a></div>
+{% if artworks %}<div class="art-grid">{% for art in artworks %}{% include "_art_card.html" %}{% endfor %}</div>{% else %}<div class="empty"><strong>The wall is waiting.</strong>Approved artworks will appear here.</div>{% endif %}
+
+<div class="section-title"><div><span class="eyebrow">A complete creative ecosystem</span><h2 class="display">More than an art feed</h2></div></div>
+<div class="stat-grid">
+  <div class="stat-card coral"><div class="label">Approved artworks</div><div class="value">{{ stats.artworks }}</div><p class="mini muted">Browse, like, report, buy, and support the artists behind them.</p></div>
+  <div class="stat-card"><div class="label">Active artists</div><div class="value">{{ stats.artists }}</div><p class="mini muted">Two teams. Different styles. One increasingly interesting arena.</p></div>
+  <div class="stat-card teal"><div class="label">Attack system</div><div class="value">+10</div><p class="mini muted">Challenge the opposing team; friendly fire earns a warning, not points.</p></div>
+  <div class="stat-card"><div class="label">Marketplace</div><div class="value">PDF</div><p class="mini muted">Secure order records and an instant downloadable receipt after checkout.</p></div>
+</div>
+{% endblock %}
+

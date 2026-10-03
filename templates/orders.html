@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block title %}Orders — Art Attack{% endblock %}{% block content %}
+<div class="section-title"><div><span class="eyebrow">Purchase history</span><h1 class="display">Your orders</h1></div><a class="btn" href="{{ url_for('browse', sale=1) }}">Browse marketplace</a></div>
+{% if orders %}<div class="list">{% for order in orders %}<a class="list-item" href="{{ url_for('order_detail', order_id=order.id) }}"><div><strong>{{ order.reference }}</strong><div class="mini muted">{{ order.items|length }} item{% if order.items|length != 1 %}s{% endif %} · {{ order.created_at|datetime }}</div></div><div style="text-align:right"><span class="status {{ order.status }}">{{ order.status|replace('_',' ') }}</span><div class="price" style="margin-top:7px">{{ order.total|money }}</div></div></a>{% endfor %}</div>{% else %}<div class="empty"><strong>No orders yet.</strong>When you collect an artwork, its order and receipt will live here.</div>{% endif %}
+{% endblock %}
+

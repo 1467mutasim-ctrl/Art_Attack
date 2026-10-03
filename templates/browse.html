@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Discover artwork — Art Attack{% endblock %}
+{% block content %}
+<div class="section-title"><div><span class="eyebrow">Curated by the community</span><h1 class="display">Discover artwork</h1></div><span class="muted">{{ artworks|length }} result{% if artworks|length != 1 %}s{% endif %}</span></div>
+<form class="filters panel" method="get">
+  <input name="q" value="{{ request.args.get('q','') }}" placeholder="Search title, artist, or tag…" aria-label="Search">
+  <select name="category"><option value="">All categories</option>{% for category in art_categories %}<option value="{{ category }}" {% if request.args.get('category') == category %}selected{% endif %}>{{ category }}</option>{% endfor %}</select>
+  <select name="team"><option value="">Both teams</option><option {% if request.args.get('team') == 'Eldians' %}selected{% endif %}>Eldians</option><option {% if request.args.get('team') == 'Marleyans' %}selected{% endif %}>Marleyans</option></select>
+  <select name="sort"><option value="newest">Newest</option><option value="popular" {% if request.args.get('sort') == 'popular' %}selected{% endif %}>Most liked</option><option value="price_low" {% if request.args.get('sort') == 'price_low' %}selected{% endif %}>Price: low</option><option value="price_high" {% if request.args.get('sort') == 'price_high' %}selected{% endif %}>Price: high</option></select>
+  <button class="btn btn-teal" type="submit">Apply</button>
+  <label class="checkbox"><input type="checkbox" name="sale" value="1" {% if request.args.get('sale') == '1' %}checked{% endif %}> For sale only</label>
+</form>
+{% if artworks %}<div class="art-grid">{% for art in artworks %}{% include "_art_card.html" %}{% endfor %}</div>{% else %}<div class="empty"><strong>No matches yet.</strong>Try a broader search or clear a filter.</div>{% endif %}
+{% endblock %}
+

@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block title %}Mailbox — Art Attack{% endblock %}{% block content %}
+<div class="section-title"><div><span class="eyebrow">Friendly fire, sales, likes & messages</span><h1 class="display">Your mailbox</h1></div><form method="post" action="{{ url_for('notifications_read_all') }}"><button class="btn" type="submit">Mark all read</button></form></div>
+{% if notifications %}<div class="list">{% for note in notifications %}<a class="list-item notification {{ note.kind }}" href="{{ note.link or '#' }}"><div><strong>{{ note.title }}</strong><p class="muted" style="margin:5px 0 0">{{ note.message }}</p></div><div class="mini muted" style="white-space:nowrap">{{ note.created_at|datetime }}</div></a>{% endfor %}</div>{% else %}<div class="empty"><strong>Your mailbox is empty.</strong>Likes, attacks, order updates, and moderation notices will arrive here.</div>{% endif %}
+{% endblock %}
+

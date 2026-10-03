@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ user.username }} — Art Attack{% endblock %}
+{% block content %}
+<section class="panel profile-hero">
+  <img class="avatar" src="{{ user.profile_image_url }}" alt="{{ user.username }}">
+  <div class="profile-copy"><span class="eyebrow">{{ user.role_name }} · Team {{ user.team }}</span><h1 class="display">{{ user.username }}</h1><p class="muted">{{ user.bio or 'This creator is letting the work do the talking.' }}</p><div class="tags"><span class="tag">♥ {{ total_likes }} likes</span><span class="tag">{{ sales }} sale{% if sales != 1 %}s{% endif %}</span><span class="tag">Joined {{ user.created_at.strftime('%b %Y') }}</span></div></div>
+  <div class="profile-actions">
+    {% if current_user.is_authenticated and current_user.id == user.id %}<a class="btn btn-primary" href="{{ url_for('edit_profile') }}">Edit profile</a><a class="btn" href="{{ url_for('user_settings') }}">Settings</a>
+    {% elif current_user.is_authenticated %}<button class="btn btn-primary" data-modal-open="#message-modal" type="button">Send message</button><button class="btn btn-danger" data-modal-open="#user-report-modal" type="button">Report</button>
+    {% else %}<a class="btn btn-primary" href="{{ url_for('login') }}">Sign in to connect</a>{% endif %}
+  </div>
+</section>
+
+<div class="section-title"><div><span class="eyebrow">Portfolio</span><h2 class="display">Artwork by {{ user.username }}</h2></div></div>
+{% if artworks %}<div class="art-grid">{% for art in artworks %}{% include '_art_card.html' %}{% endfor %}</div>{% else %}<div class="empty"><strong>No work on the wall—yet.</strong>Come back after the next studio session.</div>{% endif %}
+
+{% if current_user.is_authenticated and current_user.id != user.id %}
+<div class="modal" id="message-modal"><div class="modal-card"><div class="modal-head"><h2 class="display">Message {{ user.username }}</h2><button class="icon-btn" data-modal-close type="button">✕</button></div><form action="{{ url_for('contact_artist', user_id=user.id) }}" method="post"><div class="field"><label>Your message</label><textarea name="message" required placeholder="Ask about a piece, commission, or collaboration…"></textarea></div><button class="btn btn-primary btn-block" style="margin-top:14px" type="submit">Deliver to mailbox</button></form></div></div>
+<div class="modal" id="user-report-modal"><div class="modal-card"><div class="modal-head"><h2 class="display">Report user</h2><button class="icon-btn" data-modal-close type="button">✕</button></div><form action="{{ url_for('report_user', user_id=user.id) }}" method="post"><div class="field"><label>Reason</label><select name="reason" required><option value="">Choose a reason</option>{% for reason in report_reasons %}<option>{{ reason }}</option>{% endfor %}</select></div><div class="field" style="margin-top:12px"><label>Details</label><textarea name="description"></textarea></div><button class="btn btn-danger btn-block" style="margin-top:14px" type="submit">Submit report</button></form></div></div>
+{% endif %}
+{% endblock %}
+

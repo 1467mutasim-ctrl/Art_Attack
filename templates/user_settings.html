@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block title %}Settings — Art Attack{% endblock %}{% block content %}
+<section class="panel form-card"><span class="eyebrow">Security & account</span><h1 class="display">Account settings</h1><form method="post" class="form-grid"><div class="field full"><label>Email address</label><input name="email" type="email" value="{{ user.email }}" required></div><div class="field full"><label>New password <span class="muted">(leave blank to keep current)</span></label><input name="password" type="password" minlength="8"></div><div class="soft-panel full"><strong>Team {{ user.team }}</strong><p class="mini muted">Team membership is locked after registration to keep the competition fair. An administrator can help if it was selected incorrectly.</p></div><div class="full action-row"><a class="btn" href="{{ url_for('dashboard') }}">Cancel</a><button class="btn btn-primary" type="submit">Save settings</button></div></form></section>
+{% endblock %}
+

@@ -1,0 +1,15 @@
+<article class="art-card">
+  <a href="{{ url_for('artwork_detail', painting_id=art.id) }}">
+    <img class="art-card-image" src="{{ url_for('static', filename='uploads/' ~ art.image_path) }}" alt="{{ art.title }}" loading="lazy">
+    <span class="card-team">{{ art.owner.team }}</span>
+  </a>
+  <div class="art-card-body">
+    <h3><a href="{{ url_for('artwork_detail', painting_id=art.id) }}">{{ art.title }}</a></h3>
+    <div class="art-card-meta"><a href="{{ url_for('profile', user_id=art.owner.id) }}">by {{ art.owner.username }}</a><span>♥ {{ art.like_count }}</span></div>
+    <div class="art-card-footer">
+      <span class="mini muted">{{ art.category }}</span>
+      {% if art.for_sale %}<span class="price">{% if art.is_sold %}Sold{% else %}{{ art.price|money }}{% endif %}</span>{% endif %}
+    </div>
+  </div>
+</article>
+

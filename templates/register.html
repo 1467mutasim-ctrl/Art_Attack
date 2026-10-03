@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Join — Art Attack{% endblock %}
+{% block content %}
+<section class="auth-layout">
+  <div class="auth-art"><div class="auth-quote"><span class="eyebrow">Pick a side, bring your style</span><h2 class="display">The rivalry needs your point of view.</h2></div></div>
+  <div class="auth-panel">
+    <span class="eyebrow">Create your account</span><h1 class="display">Join the arena</h1>
+    <form method="post">
+      <div class="form-grid">
+        <div class="field"><label>Username</label><input name="username" minlength="3" maxlength="50" required></div>
+        <div class="field"><label>Email</label><input name="email" type="email" required></div>
+        <div class="field"><label>Account type</label><select name="role"><option value="member">Member / buyer</option><option value="artist">Artist / seller</option></select></div>
+        <div class="field"><label>Password</label><input name="password" type="password" minlength="8" required></div>
+        <div class="field full"><label>Choose your team</label><div class="team-picker">
+          <label class="team-option"><input type="radio" name="team" value="Eldians" required><span><strong>Eldians</strong><small class="muted">Inventive · curious · teal</small></span></label>
+          <label class="team-option marley"><input type="radio" name="team" value="Marleyans" required><span><strong>Marleyans</strong><small class="muted">Bold · relentless · coral</small></span></label>
+        </div></div>
+      </div>
+      <button class="btn btn-primary btn-block" type="submit">Create account</button>
+    </form>
+    <p class="muted mini">Already registered? <a style="color:var(--teal)" href="{{ url_for('login') }}">Sign in</a></p>
+  </div>
+</section>
+{% endblock %}
+

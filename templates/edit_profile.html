@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block title %}Edit profile — Art Attack{% endblock %}{% block content %}
+<section class="panel form-card"><span class="eyebrow">Personal studio</span><h1 class="display">Edit profile</h1><form method="post" enctype="multipart/form-data" class="form-grid"><div class="field"><label>Display name</label><input name="display_name" value="{{ user.username }}" required></div><div class="field"><label>Profile image</label><input name="profile_image" type="file" accept="image/png,image/jpeg,image/gif,image/webp"></div><div class="field full"><label>Bio</label><textarea name="bio" maxlength="1000">{{ user.bio or '' }}</textarea></div><div class="full action-row"><a class="btn" href="{{ url_for('profile', user_id=user.id) }}">Cancel</a><button class="btn btn-primary" type="submit">Save profile</button></div></form></section>
+{% endblock %}
+

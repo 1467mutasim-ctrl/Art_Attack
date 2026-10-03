@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block title %}Upload artwork — Art Attack{% endblock %}{% block content %}
+<section class="panel form-card" style="width:min(900px,100%)"><span class="eyebrow">Studio submission</span><h1 class="display">Upload new artwork</h1><p class="muted">New work enters the admin review queue before appearing publicly.</p>
+<form method="post" enctype="multipart/form-data" class="form-grid">
+  <div class="field"><label>Artwork title</label><input name="title" maxlength="120" required></div>
+  <div class="field"><label>Category</label><select name="category" required>{% for category in art_categories %}<option>{{ category }}</option>{% endfor %}</select></div>
+  <div class="field"><label>Medium</label><input name="medium" maxlength="80" placeholder="e.g. Digital painting"></div>
+  <div class="field"><label>Tags</label><input name="tags" maxlength="255" placeholder="fantasy, character, vibrant"></div>
+  <div class="field full"><label>Description</label><textarea name="description" maxlength="5000" placeholder="Tell viewers what makes this piece special."></textarea></div>
+  <div class="field full"><label>Artwork image</label><div class="file-drop"><img data-image-preview hidden alt="Preview" style="max-height:320px;margin:0 auto 14px;border-radius:12px"><input data-image-input type="file" name="image" accept="image/png,image/jpeg,image/gif,image/webp" required><p class="mini muted">PNG, JPG, GIF, or WEBP · up to 12 MB</p></div></div>
+  <div class="field"><label>Price (BDT)</label><input name="price" type="number" min="0" step="0.01" value="0"></div>
+  <label class="checkbox" style="align-self:end;padding-bottom:12px"><input name="for_sale" value="1" type="checkbox"> List this artwork for sale</label>
+  <div class="full action-row"><a class="btn" href="{{ url_for('dashboard') }}">Cancel</a><button class="btn btn-primary" type="submit">Submit for approval</button></div>
+</form></section>{% endblock %}
+

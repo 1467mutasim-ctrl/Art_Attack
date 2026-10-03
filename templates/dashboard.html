@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Art Attack{% endblock %}
+{% block content %}
+<div class="section-title"><div><span class="eyebrow">{{ current_user.role_name }} · Team {{ current_user.team }}</span><h1 class="display">Welcome back, {{ current_user.username }}</h1></div><div class="profile-actions">{% if current_user.role == 'artist' %}<a class="btn btn-primary" href="{{ url_for('upload_artwork') }}">Upload artwork</a>{% endif %}<a class="btn" href="{{ url_for('create_character') }}">New character</a></div></div>
+<div class="stat-grid">
+  <div class="stat-card coral"><div class="label">Total likes</div><div class="value">{{ total_likes }}</div></div>
+  <div class="stat-card"><div class="label">Attacks sent</div><div class="value">{{ attacks_sent }}</div></div>
+  <div class="stat-card teal"><div class="label">Attacks received</div><div class="value">{{ attacks_received }}</div></div>
+  {% if current_user.role == 'artist' %}<div class="stat-card"><div class="label">Sales revenue</div><div class="value" style="font-size:1.7rem">{{ revenue|money }}</div></div>{% else %}<div class="stat-card"><div class="label">Orders placed</div><div class="value">{{ purchases }}</div></div>{% endif %}
+</div>
+
+<div class="dashboard-grid" style="margin-top:18px">
+  <section class="panel">
+    <div class="section-title" style="margin:0 0 20px"><div><span class="eyebrow">Audience analytics</span><h2 class="display">Likes by artwork</h2></div></div>
+    {% if like_breakdown and total_likes %}
+      {% set colors = ['#f15b47','#59d4c5','#f5aa3c','#74aef8','#b37df4','#ff8eae'] %}
+      {% set ns = namespace(start=0, segments='') %}
+      {% for item in like_breakdown %}{% if item.count %}{% set end = ns.start + (item.count / total_likes * 100) %}{% set ns.segments = ns.segments ~ colors[loop.index0 % colors|length] ~ ' ' ~ ns.start ~ '% ' ~ end ~ '%,' %}{% set ns.start = end %}{% endif %}{% endfor %}
+      <div class="chart-layout">
+        <div class="donut" style="--chart:{{ ns.segments.rstrip(',') }}"></div>
+        <div class="chart-legend">
+          {% for item in like_breakdown %}{% if item.count %}<div class="legend-row"><span class="legend-dot" style="--dot:{{ colors[loop.index0 % colors|length] }}"></span><div><a href="{{ url_for('artwork_detail', painting_id=item.artwork.id) }}"><strong>{{ item.artwork.title }}</strong></a><div class="likers">{% for liker in item.likers %}<a class="liker" href="{{ url_for('profile', user_id=liker.id) }}">{{ liker.username }}{% if not loop.last %},{% endif %}</a>{% endfor %}</div></div><strong>{{ item.count }}</strong></div>{% endif %}{% endfor %}
+        </div>
+      </div>
+    {% else %}<div class="empty"><strong>Your audience chart is warming up.</strong>Likes—and the people behind them—will appear here.</div>{% endif %}
+  </section>
+  <aside class="panel">
+    <div class="section-title" style="margin:0 0 16px"><div><span class="eyebrow">Mailbox</span><h2 class="display">Recent updates</h2></div><a class="mini" href="{{ url_for('notifications') }}">View all</a></div>
+    <div class="list">{% for note in recent_notifications %}<a class="list-item notification {{ note.kind }}" href="{{ note.link or url_for('notifications') }}"><div><strong>{{ note.title }}</strong><div class="mini muted">{{ note.message|truncate(90) }}</div></div></a>{% else %}<div class="empty"><strong>All quiet.</strong>No notifications yet.</div>{% endfor %}</div>
+  </aside>
+</div>
+
+{% if current_user.role == 'artist' %}
+<div class="section-title"><div><span class="eyebrow">Marketplace fulfillment</span><h2 class="display">Recent sales</h2></div></div>
+{% if recent_sales %}<div class="list">{% for item in recent_sales %}<a class="list-item" href="{{ url_for('order_detail', order_id=item.order.id) }}"><div class="list-main"><img class="thumb" src="{{ url_for('static', filename='uploads/' ~ item.artwork.image_path) }}" alt=""><div><strong>{{ item.title }}</strong><div class="mini muted">{{ item.order.buyer.username }} · {{ item.order.created_at|datetime }}</div></div></div><div style="text-align:right"><span class="status {{ item.order.status }}">{{ item.order.status|replace('_',' ') }}</span><div class="price" style="margin-top:6px">{{ item.price|money }}</div></div></a>{% endfor %}</div>{% else %}<div class="empty"><strong>No sales to fulfill yet.</strong>New purchases will appear here with buyer delivery details and order controls.</div>{% endif %}
+{% endif %}
+
+<div class="section-title"><div><span class="eyebrow">Your studio</span><h2 class="display">Artwork pipeline</h2></div></div>
+{% if artworks %}<div class="art-grid">{% for art in artworks %}{% include '_art_card.html' %}{% endfor %}</div>{% else %}<div class="empty"><strong>No artwork uploaded yet.</strong>{% if current_user.role == 'artist' %}<a style="color:var(--teal)" href="{{ url_for('upload_artwork') }}">Submit your first piece for approval.</a>{% else %}Switch to an artist account to start selling work.{% endif %}</div>{% endif %}
+{% endblock %}
